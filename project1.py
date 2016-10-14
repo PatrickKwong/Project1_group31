@@ -54,6 +54,33 @@ def Algorithm2(array):
 		print array
 		print maxArray
 		print maxSum
+#O(n*lg(n)) recursive algorithm. Based off mycodeschool https://gist.github.com/mycodeschool/8b4bcff69427c8a6f2aa implementation
+def Algorithm3(array,leftIndex,rightIndex):
+	#base case
+	if(leftIndex == rightIndex):
+		return array[rightIndex]
+
+	midPoint = int((rightIndex + leftIndex)/2)  #casting to int is same thing as floor function
+
+	leftMSS = Algorithm3(array,leftIndex,midPoint)
+	rightMSS = Algorithm3(array,midPoint + 1, rightIndex)
+
+	leftMax = -10000
+	rightMax = -100000
+	tempSum = 0
+
+	for i in range(midPoint,leftIndex -1,-1):
+		tempSum += array[i]
+		leftMax = max(leftMax,tempSum)
+
+	tempSum = 0
+	for i in range(midPoint + 1,rightIndex + 1):
+		tempSum += array[i]
+		rightMax = max(rightMax,tempSum)
+
+	ans = max(leftMSS,rightMSS)
+
+	return max(ans,leftMax+rightMax)
 
 #Here is the "main" function so far it just reads every line from a file, stores those lines (arrays)
 #as an array and then stores those in an array of arrays (so you only have to get file contents once. )
@@ -84,3 +111,10 @@ for k in arrayOfArrays:
 print "Algorithm 2 results"
 for k in arrayOfArrays:
 	Algorithm2(k)
+print "algorithm 3 results"
+for k in arrayOfArrays:
+	lastIndex = len(k) - 1
+	result = Algorithm3(k,0,lastIndex)
+	print result
+
+
