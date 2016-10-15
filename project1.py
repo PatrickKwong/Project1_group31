@@ -54,6 +54,7 @@ def Algorithm2(array):
 		print array
 		print maxArray
 		print maxSum
+
 #O(n*lg(n)) recursive algorithm. Based off mycodeschool https://gist.github.com/mycodeschool/8b4bcff69427c8a6f2aa implementation
 def Algorithm3(array,leftIndex,rightIndex):
 	#base case
@@ -81,6 +82,34 @@ def Algorithm3(array,leftIndex,rightIndex):
 	ans = max(leftMSS,rightMSS)
 
 	return max(ans,leftMax+rightMax)
+
+# O(n) Linear-time - iteration for max subarray.
+# Source: Based on Prof. Borradaile's Designing Poly-Time Algorithms lecture and the provided Algorithm 4 Pseudocode.pdf
+def Algorithm4(array):
+	n = len(array)
+	maxSum = -10000
+	endingHereSum = -10000
+
+	for i in range(0, n):
+		endingHereHigh= i
+
+		if endingHereSum > 0:
+			endingHereSum = endingHereSum + array[i]
+
+		else:
+			endingHereLow = i
+			endingHereSum = array[i]
+
+		if endingHereSum > maxSum:
+			maxSum = endingHereSum
+			maxArrayIndexLow = endingHereLow
+			maxArrayIndexHigh = endingHereHigh
+
+	maxArray = []
+	maxArray = array[maxArrayIndexLow:maxArrayIndexHigh+1]
+	print array
+	print maxArray
+	print maxSum
 
 #Here is the "main" function so far it just reads every line from a file, stores those lines (arrays)
 #as an array and then stores those in an array of arrays (so you only have to get file contents once. )
@@ -116,5 +145,7 @@ for k in arrayOfArrays:
 	lastIndex = len(k) - 1
 	result = Algorithm3(k,0,lastIndex)
 	print result
-
+print "Algorithm 4 results"
+for k in arrayOfArrays:
+	Algorithm4(k)
 
