@@ -4,8 +4,7 @@
 #08OCT2016
 
 
-#O(n^3) brute force solution for maximum sub array problem. takes an array to find the MSS of
-# return value is an array with MSS indices of input array as well as sum of the sub sequence
+#O(n^3) brute force solution for maximum sub array problem. takes an array to find max sub array of
 def Algorithm1(array):
 		maxSum = -10000  #initialize max sum to some arbitrarily low number
 		maxArrayIndexLow = -1 #initialize to unreal index
@@ -24,11 +23,20 @@ def Algorithm1(array):
 				if (thisSum >= maxSum):
 					maxSum = thisSum
 					maxArrayIndexLow = i
+<<<<<<< HEAD
 					maxArrayIndexHigh = j
 		# set up the return array
 		maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum] #start index, end index, MSS sum
 		return maxArray
 
+=======
+					maxArrayIndexHigh = j+1
+		maxArray = []
+		maxArray = array[maxArrayIndexLow:maxArrayIndexHigh]
+		print array
+		print maxArray
+		print maxSum
+>>>>>>> d66bac3b478cb99efd633bff4b893d4ce1c018b3
 
 #O(n^2) slightly better enumeration. Based off Patricks algorithm. 
 
@@ -48,11 +56,20 @@ def Algorithm2(array):
 				if (thisSum >= maxSum):
 					maxSum = thisSum
 					maxArrayIndexLow = i
+<<<<<<< HEAD
 					maxArrayIndexHigh = j
 				# set up the return array
 		maxArray = []
 		maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum] #start index, end index, MSS sum
 		return maxArray
+=======
+					maxArrayIndexHigh = j+1
+		maxArray = []
+		maxArray = array[maxArrayIndexLow:maxArrayIndexHigh]
+		print array
+		print maxArray
+		print maxSum
+>>>>>>> d66bac3b478cb99efd633bff4b893d4ce1c018b3
 
 #O(n*lg(n)) recursive algorithm. Based off mycodeschool https://gist.github.com/mycodeschool/8b4bcff69427c8a6f2aa implementation
 def Algorithm3(array):
@@ -164,6 +181,34 @@ def Algorithm4(array):
 	print maxSum
 	
 
+# O(n) Linear-time - iteration for max subarray.
+# Source: Based on Prof. Borradaile's Designing Poly-Time Algorithms lecture and the provided Algorithm 4 Pseudocode.pdf
+def Algorithm4(array):
+	n = len(array)
+	maxSum = -10000
+	endingHereSum = -10000
+
+	for i in range(0, n):
+		endingHereHigh= i
+
+		if endingHereSum > 0:
+			endingHereSum = endingHereSum + array[i]
+
+		else:
+			endingHereLow = i
+			endingHereSum = array[i]
+
+		if endingHereSum > maxSum:
+			maxSum = endingHereSum
+			maxArrayIndexLow = endingHereLow
+			maxArrayIndexHigh = endingHereHigh
+
+	maxArray = []
+	maxArray = array[maxArrayIndexLow:maxArrayIndexHigh+1]
+	print array
+	print maxArray
+	print maxSum
+
 #Here is the "main" function so far it just reads every line from a file, stores those lines (arrays)
 #as an array and then stores those in an array of arrays (so you only have to get file contents once. )
 
@@ -178,9 +223,18 @@ with open('MSS_TestProblems.txt','r') as f:
 			#store every array in an array of arrays
 			arrayOfArrays.append(array)
 			
+#this test algorithm led me to discover the range error in the original algorithms proposed
+# testArray = [-2,4,3,1]
+
+# print "alg1"
+# Algorithm1(testArray)
+# print "alg2"
+
+# Algorithm2(testArray)
 
 print "Algorithm 1 results:"
 for k in arrayOfArrays:
+<<<<<<< HEAD
 	alg1results = []
 	alg1results = Algorithm1(k)
 	print k
@@ -210,6 +264,20 @@ for k in arrayOfArrays:
 	print k
 	print k[alg3results[0]:alg3results[1] + 1]
 	print 'Sum of MSS = ' + str(alg3results[2])
+=======
+	Algorithm1(k)
+print "Algorithm 2 results"
+for k in arrayOfArrays:
+	Algorithm2(k)
+print "algorithm 3 results"
+for k in arrayOfArrays:
+	lastIndex = len(k) - 1
+	result = Algorithm3(k,0,lastIndex)
+	print result
+print "Algorithm 4 results"
+for k in arrayOfArrays:
+	Algorithm4(k)
+>>>>>>> d66bac3b478cb99efd633bff4b893d4ce1c018b3
 
 print "Algorithm 4 results"
 for k in arrayOfArrays:
