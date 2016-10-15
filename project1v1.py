@@ -57,6 +57,7 @@ def Algorithm2(array):
 		return maxArray
 
 #O(n*lg(n)) recursive algorithm. Based off mycodeschool https://gist.github.com/mycodeschool/8b4bcff69427c8a6f2aa implementation
+#key addition includes storing keeping track of the indices of the MSS in the recursive calls
 def Algorithm3(array):
 	#store the original input array w/o index prefix info (so that reference index work)
 	workingArray = []
@@ -172,17 +173,21 @@ arrayOfArrays = []
 with open('MSS_Problems.txt','r') as f:
 	#parse each line in test file and store in array to send to the different functions
 	for line in f:
+		#ignore blank lines
+		if not line.strip():
+			garbage = 1 #lol just for fun, keep track of if there is a blank line in the input file
+		else:
 			line = line.replace("[","")
 			line = line.replace("]","")
 			line = line.replace(" ","")
-			array = [int(x) for x in line.split(',') if x not in '\n']
-			#store every array in an array of arrays
-			if (len(array) >= 1):
-
-				arrayOfArrays.append(array)
+			line = line.replace('\n',"")
+			#parsing on comma
+			array = [int(x) for x in line.split(",")]
+			#make array of arrays for use in all 4 algorithms. 
+			arrayOfArrays.append(array)
 			
 
-fo = open("MSS_results.txt","w+") #open file object to print results
+fo = open("MSS_Results.txt","w+") #open file object to print results
 
 #output to MSS_results.txt file alg1 results
 fo.write("Algorithm 1 results: \n")

@@ -7,7 +7,7 @@
 # O(n^2) Better Enumeration - iteration for max subarray.
 # Source: Based on Prof. Borradaile's Designing Poly-Time Algorithms lecture
 def Algorithm2(array):
-		maxSum = 0
+		maxSum = float("-inf")
 		maxArrayIndexLow = 0
 		maxArrayIndexHigh = 0
 
@@ -22,7 +22,7 @@ def Algorithm2(array):
 					maxArrayIndexHigh = j
 
 		maxArray = []
-		maxArray = array[maxArrayIndexLow:maxArrayIndexHigh+1]
+		maxArray = array[maxArrayIndexLow:maxArrayIndexHigh + 1]
 		print array
 		print maxArray
 		print maxSum
