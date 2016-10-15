@@ -24,12 +24,9 @@ def Algorithm1(array):
 				if (thisSum >= maxSum):
 					maxSum = thisSum
 					maxArrayIndexLow = i
-					maxArrayIndexHigh = j+1
+					maxArrayIndexHigh = j
 		# set up the return array
-		maxArray = []
-		maxArray.append(maxArrayIndexLow)  #this is start index in input array of MSS
-		maxArray.append(maxArrayIndexHigh) #this is end index in input array of MSS
-		maxArray.append(maxSum) # this is the MSS sum
+		maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum] #start index, end index, MSS sum
 		return maxArray
 
 
@@ -51,41 +48,121 @@ def Algorithm2(array):
 				if (thisSum >= maxSum):
 					maxSum = thisSum
 					maxArrayIndexLow = i
-					maxArrayIndexHigh = j+1
+					maxArrayIndexHigh = j
 				# set up the return array
 		maxArray = []
-		maxArray.append(maxArrayIndexLow)  #this is start index in input array of MSS
-		maxArray.append(maxArrayIndexHigh) #this is end index in input array of MSS
-		maxArray.append(maxSum) # this is the MSS sum
+		maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum] #start index, end index, MSS sum
 		return maxArray
 
 #O(n*lg(n)) recursive algorithm. Based off mycodeschool https://gist.github.com/mycodeschool/8b4bcff69427c8a6f2aa implementation
-def Algorithm3(array,leftIndex,rightIndex):
-	#base case
+def Algorithm3(array):
+	#store the original input array w/o index prefix info (so that reference index work)
+	workingArray = []
+	for i in range(3,len(array)):
+		workingArray.append(array[i])
+	
+	#base case, indicies are equal so it is a 1 element array. 
+	leftIndex = array[0] #could probably use these values directly but its easier to read w/left right index ithink
+	rightIndex = array[1]
 	if(leftIndex == rightIndex):
-		return array[rightIndex]
+		array[2] = workingArray[leftIndex]
+		return array
 
-	midPoint = int((rightIndex + leftIndex)/2)  #casting to int is same thing as floor function
+	midPoint = int((array[0] + array[1])/2)  #casting to int is same thing as floor function
 
-	leftMSS = Algorithm3(array,leftIndex,midPoint)
-	rightMSS = Algorithm3(array,midPoint + 1, rightIndex)
+	#deal with left MSS
+	leftMSSinput = [array[0],midPoint,array[2]] # here is the prefix info, left index, right index, sum, then input array
+	for i in range(3,len(array)):
+		leftMSSinput.append(array[i])
+	leftMSS = []
+	leftMSS = Algorithm3(leftMSSinput) # recurse
 
+	#deal with right MSS
+	rightMSSinput = [midPoint + 1,array[1],array[2]] # set up prefix info for right just like left
+	for i in range(3,len(array)):
+		rightMSSinput.append(array[i])
+	rightMSS = []
+	rightMSS = Algorithm3(rightMSSinput)
+
+	# now deal with the split case
 	leftMax = -10000
 	rightMax = -100000
+	lowIndexSplit = -1
+	highIndexSplit = -1
 	tempSum = 0
-
-	for i in range(midPoint,leftIndex -1,-1):
-		tempSum += array[i]
-		leftMax = max(leftMax,tempSum)
-
+	
+	#work backward from midpoint
+	for i in range(midPoint,array[0] -1,-1):
+		tempSum += workingArray[i]
+		if(tempSum >= leftMax):
+			lowIndexSplit = i
+			leftMax = tempSum
+		
+	#work forward from midpoint
 	tempSum = 0
-	for i in range(midPoint + 1,rightIndex + 1):
-		tempSum += array[i]
-		rightMax = max(rightMax,tempSum)
+	for i in range(midPoint + 1,array[1] + 1):
+		tempSum += workingArray[i]
+		if(tempSum >= rightMax):
+			highIndexSplit = i 
+			rightMax = tempSum
+		
+		#final bit of logic for finding max. Once max is found, update prefix (left index, right index, sum) and return to next level recursion
 
-	ans = max(leftMSS,rightMSS)
+	if(leftMSS[2] >= rightMSS[2]):
+		if(leftMSS[2] >= (leftMax + rightMax)):
+			array[0] = leftMSS[0]
+			array[1] = leftMSS[1]
+			array[2] = leftMSS[2]
 
-	return max(ans,leftMax+rightMax)
+			return array
+		else:
+			array[0] = lowIndexSplit
+			array[1] = highIndexSplit
+			array[2] = leftMax + rightMax
+
+			return array
+	else:
+		if(rightMSS[2] >= (leftMax + rightMax)):
+			array[0] = rightMSS[0]
+			array[1] = rightMSS[1]
+			array[2] = rightMSS[2]
+
+			return array
+		else:
+			array[0] = lowIndexSplit
+			array[1] = highIndexSplit
+			array[2] = leftMax + rightMax
+
+			return array
+
+# O(n) Linear-time - iteration for max subarray.
+# Source: Based on Prof. Borradaile's Designing Poly-Time Algorithms lecture and the provided Algorithm 4 Pseudocode.pdf
+def Algorithm4(array):
+	n = len(array)
+	maxSum = -10000
+	endingHereSum = -10000
+
+	for i in range(0, n):
+		endingHereHigh= i
+
+		if endingHereSum > 0:
+			endingHereSum = endingHereSum + array[i]
+
+		else:
+			endingHereLow = i
+			endingHereSum = array[i]
+
+		if endingHereSum > maxSum:
+			maxSum = endingHereSum
+			maxArrayIndexLow = endingHereLow
+			maxArrayIndexHigh = endingHereHigh
+
+	maxArray = []
+	maxArray = array[maxArrayIndexLow:maxArrayIndexHigh+1]
+	print array
+	print maxArray
+	print maxSum
+	
 
 #Here is the "main" function so far it just reads every line from a file, stores those lines (arrays)
 #as an array and then stores those in an array of arrays (so you only have to get file contents once. )
@@ -107,7 +184,7 @@ for k in arrayOfArrays:
 	alg1results = []
 	alg1results = Algorithm1(k)
 	print k
-	print k[alg1results[0]:alg1results[1]]
+	print k[alg1results[0]:alg1results[1] + 1]
 	print 'Sum of MSS = ' + str(alg1results[2])
 
 print "Algorithm 2 results"
@@ -115,13 +192,25 @@ for k in arrayOfArrays:
 	alg2results = []
 	alg2results = Algorithm2(k)
 	print k
-	print k[alg2results[0]:alg2results[1]]
+	print k[alg2results[0]:alg2results[1] + 1]
 	print 'Sum of MSS = ' + str(alg2results[2])
 
-# print "algorithm 3 results"
-# for k in arrayOfArrays:
-# 	lastIndex = len(k) - 1
-# 	result = Algorithm3(k,0,lastIndex)
-# 	print result
+print "algorithm 3 results"
+for k in arrayOfArrays:
+	
+	lastIndex = len(k) - 1
+	inputArray = [0,lastIndex,0]
 
+	for i in range(0,len(k)):
+		inputArray.append(k[i])
+	
+	alg3results = []
+	alg3results = Algorithm3(inputArray)
 
+	print k
+	print k[alg3results[0]:alg3results[1] + 1]
+	print 'Sum of MSS = ' + str(alg3results[2])
+
+print "Algorithm 4 results"
+for k in arrayOfArrays:
+	Algorithm4(k)
