@@ -159,11 +159,9 @@ def Algorithm4(array):
 			maxArrayIndexLow = endingHereLow
 			maxArrayIndexHigh = endingHereHigh
 
-	maxArray = []
-	maxArray = array[maxArrayIndexLow:maxArrayIndexHigh+1]
-	print array
-	print maxArray
-	print maxSum
+	maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum]
+
+	return maxArray
 	
 
 #Here is the "main" function so far it just reads every line from a file, stores those lines (arrays)
@@ -171,33 +169,40 @@ def Algorithm4(array):
 
 #declare and array to hold the arrays from file. 
 arrayOfArrays = []
-with open('MSS_TestProblems.txt','r') as f:
+with open('MSS_Problems.txt','r') as f:
 	#parse each line in test file and store in array to send to the different functions
 	for line in f:
 			line = line.replace("[","")
 			line = line.replace("]","")
-			array = [int(x) for x in line.split(',')]
+			line = line.replace(" ","")
+			array = [int(x) for x in line.split(',') if x not in '\n']
 			#store every array in an array of arrays
-			arrayOfArrays.append(array)
+			if (len(array) >= 1):
+
+				arrayOfArrays.append(array)
 			
 
-print "Algorithm 1 results:"
+fo = open("MSS_results.txt","w+") #open file object to print results
+
+#output to MSS_results.txt file alg1 results
+fo.write("Algorithm 1 results: \n")
 for k in arrayOfArrays:
 	alg1results = []
 	alg1results = Algorithm1(k)
-	print k
-	print k[alg1results[0]:alg1results[1] + 1]
-	print 'Sum of MSS = ' + str(alg1results[2])
+	fo.write(str(k) + '\n')
+	fo.write(str(k[alg1results[0]:alg1results[1] + 1]) + '\n')
+	fo.write(str(alg1results[2]) + '\n')
 
-print "Algorithm 2 results"
+#output to MSS_results.txt file alg2 results
+fo.write("Algorithm 2 results: \n")
 for k in arrayOfArrays:
 	alg2results = []
 	alg2results = Algorithm2(k)
-	print k
-	print k[alg2results[0]:alg2results[1] + 1]
-	print 'Sum of MSS = ' + str(alg2results[2])
-
-print "algorithm 3 results"
+	fo.write(str(k) + '\n')
+	fo.write(str(k[alg2results[0]:alg2results[1] + 1]) + '\n')
+	fo.write(str(alg2results[2]) + '\n')
+#output to MSS_results.txt file alg3 results
+fo.write("Algorithm 3 results: \n")
 for k in arrayOfArrays:
 	
 	lastIndex = len(k) - 1
@@ -209,10 +214,17 @@ for k in arrayOfArrays:
 	alg3results = []
 	alg3results = Algorithm3(inputArray)
 
-	print k
-	print k[alg3results[0]:alg3results[1] + 1]
-	print 'Sum of MSS = ' + str(alg3results[2])
+	fo.write(str(k) + '\n')
+	fo.write(str(k[alg3results[0]:alg3results[1] + 1]) + '\n')
+	fo.write(str(alg3results[2]) + '\n')
 
-print "Algorithm 4 results"
+fo.write("Algorithm 4 results: \n")
 for k in arrayOfArrays:
-	Algorithm4(k)
+	alg4results = []
+	alg4results = Algorithm4(k)
+	fo.write(str(k) + '\n')
+	fo.write(str(k[alg4results[0]:alg4results[1] + 1]) + '\n')
+	fo.write(str(alg4results[2]) + '\n')
+
+print "done"
+fo.close()
