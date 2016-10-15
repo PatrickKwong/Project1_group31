@@ -4,7 +4,8 @@
 #08OCT2016
 
 
-#O(n^3) brute force solution for maximum sub array problem. takes an array to find max sub array of
+#O(n^3) brute force solution for maximum sub array problem. takes an array to find the MSS of
+# return value is an array with MSS indices of input array as well as sum of the sub sequence
 def Algorithm1(array):
 		maxSum = -10000  #initialize max sum to some arbitrarily low number
 		maxArrayIndexLow = -1 #initialize to unreal index
@@ -24,11 +25,13 @@ def Algorithm1(array):
 					maxSum = thisSum
 					maxArrayIndexLow = i
 					maxArrayIndexHigh = j+1
+		# set up the return array
 		maxArray = []
-		maxArray = array[maxArrayIndexLow:maxArrayIndexHigh]
-		print array
-		print maxArray
-		print maxSum
+		maxArray.append(maxArrayIndexLow)  #this is start index in input array of MSS
+		maxArray.append(maxArrayIndexHigh) #this is end index in input array of MSS
+		maxArray.append(maxSum) # this is the MSS sum
+		return maxArray
+
 
 #O(n^2) slightly better enumeration. Based off Patricks algorithm. 
 
@@ -49,11 +52,13 @@ def Algorithm2(array):
 					maxSum = thisSum
 					maxArrayIndexLow = i
 					maxArrayIndexHigh = j+1
+				# set up the return array
 		maxArray = []
-		maxArray = array[maxArrayIndexLow:maxArrayIndexHigh]
-		print array
-		print maxArray
-		print maxSum
+		maxArray.append(maxArrayIndexLow)  #this is start index in input array of MSS
+		maxArray.append(maxArrayIndexHigh) #this is end index in input array of MSS
+		maxArray.append(maxSum) # this is the MSS sum
+		return maxArray
+
 #O(n*lg(n)) recursive algorithm. Based off mycodeschool https://gist.github.com/mycodeschool/8b4bcff69427c8a6f2aa implementation
 def Algorithm3(array,leftIndex,rightIndex):
 	#base case
@@ -96,25 +101,27 @@ with open('MSS_TestProblems.txt','r') as f:
 			#store every array in an array of arrays
 			arrayOfArrays.append(array)
 			
-#this test algorithm led me to discover the range error in the original algorithms proposed
-# testArray = [-2,4,3,1]
-
-# print "alg1"
-# Algorithm1(testArray)
-# print "alg2"
-
-# Algorithm2(testArray)
 
 print "Algorithm 1 results:"
 for k in arrayOfArrays:
-	Algorithm1(k)
+	alg1results = []
+	alg1results = Algorithm1(k)
+	print k
+	print k[alg1results[0]:alg1results[1]]
+	print 'Sum of MSS = ' + str(alg1results[2])
+
 print "Algorithm 2 results"
 for k in arrayOfArrays:
-	Algorithm2(k)
-print "algorithm 3 results"
-for k in arrayOfArrays:
-	lastIndex = len(k) - 1
-	result = Algorithm3(k,0,lastIndex)
-	print result
+	alg2results = []
+	alg2results = Algorithm2(k)
+	print k
+	print k[alg2results[0]:alg2results[1]]
+	print 'Sum of MSS = ' + str(alg2results[2])
+
+# print "algorithm 3 results"
+# for k in arrayOfArrays:
+# 	lastIndex = len(k) - 1
+# 	result = Algorithm3(k,0,lastIndex)
+# 	print result
 
 
