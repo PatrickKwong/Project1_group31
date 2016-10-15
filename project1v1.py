@@ -179,12 +179,11 @@ with open('MSS_TestProblems.txt','r') as f:
 	if (len(array) >= 1):
             arrayOfArrays.append(array)
 
+fo = open("MSS_results.txt","w+") #open file object to print results
 
 csv_file = open("results.csv", "w+")
 csv_writer = csv.writer(csv_file, delimiter = ',')
 num = 0
-fo = open("MSS_results.txt","w+") #open file object to print results
-
 #output to MSS_results.txt file alg1 results
 fo.write("Algorithm 1 results: \n")
 for k in arrayOfArrays:
