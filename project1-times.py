@@ -1,3 +1,12 @@
+#!/usr/bin/python
+#Cas Donoghue
+#Patrick Kwong
+#Nicholas Vrontakis
+#Group 31
+#Project1 CS325 Analysis of Algorithms - timing
+#OCT 6 2016
+
+
 from random import choice
 from time import time
 
