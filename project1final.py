@@ -2,16 +2,15 @@
 #Cas Donoghue
 #Patrick Kwong
 #Nicholas Vrontakis
+#Group 31
 #Project1 CS325 Analysis of Algorithms
-#08OCT2016
+#OCT 6 2016
 
 
 #O(n^3) brute force solution for maximum sub array problem. takes an array to find the MSS of
 # return value is an array with MSS indices of input array as well as sum of the sub sequence
 def Algorithm1(array):
-		maxSum = -10000  #initialize max sum to some arbitrarily low number
-		maxArrayIndexLow = -1 #initialize to unreal index
-		maxArrayIndexHigh = -1 #initialize to unreal index
+		maxSum = float("-inf")   #initialize max sum to some arbitrarily low number
 
 		#This is the main logic. Basically the nested loops will find a sum for every.
 		#The maximum value and the indices of the corresponding array will be saved. 
@@ -32,12 +31,10 @@ def Algorithm1(array):
 		return maxArray
 
 
-#O(n^2) slightly better enumeration. Based off Patricks algorithm. 
-
+#O(n^2) slightly better enumeration.
+# Source: Based on Prof. Borradaile's Designing Poly-Time Algorithms lecture
 def Algorithm2(array):
-		maxSum = -10000  #initialize max sum to some arbitrarily low number
-		maxArrayIndexLow = -1 #initialize to unreal index
-		maxArrayIndexHigh = -1 #initialize to unreal index
+		maxSum = float("-inf")  #initialize max sum to some arbitrarily low number
 
 		#This is the main logic. Basically the nested loops will find a sum for every.
 		#The maximum value and the indices of the corresponding array will be saved. 
@@ -52,7 +49,6 @@ def Algorithm2(array):
 					maxArrayIndexLow = i
 					maxArrayIndexHigh = j
 				# set up the return array
-		maxArray = []
 		maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum] #start index, end index, MSS sum
 		return maxArray
 
@@ -142,8 +138,8 @@ def Algorithm3(array):
 # Source: Based on Prof. Borradaile's Designing Poly-Time Algorithms lecture and the provided Algorithm 4 Pseudocode.pdf
 def Algorithm4(array):
 	n = len(array)
-	maxSum = -10000
-	endingHereSum = -10000
+	maxSum = float("-inf")
+	endingHereSum = float("-inf")
 
 	for i in range(0, n):
 		endingHereHigh= i
