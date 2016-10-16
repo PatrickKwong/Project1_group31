@@ -13,7 +13,7 @@ def Algorithm1(array):
 		maxSum = float("-inf")   #initialize max sum to some arbitrarily low number
 
 		#This is the main logic. Basically the nested loops will find a sum for every.
-		#The maximum value and the indices of the corresponding array will be saved. 
+		#The maximum value and the indices of the corresponding array will be saved.
 		for i in range(0,len(array)):
 			#print 'i is ' + str(i)  #stub for testing
 			for j in range(i,len(array)):
@@ -37,7 +37,7 @@ def Algorithm2(array):
 		maxSum = float("-inf")  #initialize max sum to some arbitrarily low number
 
 		#This is the main logic. Basically the nested loops will find a sum for every.
-		#The maximum value and the indices of the corresponding array will be saved. 
+		#The maximum value and the indices of the corresponding array will be saved.
 		for i in range(0,len(array)):
 			thisSum = 0
 			#print 'i is ' + str(i) #stub for testing
@@ -59,8 +59,8 @@ def Algorithm3(array):
 	workingArray = []
 	for i in range(3,len(array)):
 		workingArray.append(array[i])
-	
-	#base case, indicies are equal so it is a 1 element array. 
+
+	#base case, indicies are equal so it is a 1 element array.
 	leftIndex = array[0] #could probably use these values directly but its easier to read w/left right index ithink
 	rightIndex = array[1]
 	if(leftIndex == rightIndex):
@@ -84,27 +84,27 @@ def Algorithm3(array):
 	rightMSS = Algorithm3(rightMSSinput)
 
 	# now deal with the split case
-	leftMax = -10000
-	rightMax = -100000
-	lowIndexSplit = -1
-	highIndexSplit = -1
+	leftMax = workingArray[midPoint]
+	rightMax = workingArray[midPoint + 1]
+	lowIndexSplit = midPoint
+	highIndexSplit = midPoint + 1
 	tempSum = 0
-	
+
 	#work backward from midpoint
 	for i in range(midPoint,array[0] -1,-1):
 		tempSum += workingArray[i]
 		if(tempSum >= leftMax):
 			lowIndexSplit = i
 			leftMax = tempSum
-		
+
 	#work forward from midpoint
 	tempSum = 0
 	for i in range(midPoint + 1,array[1] + 1):
 		tempSum += workingArray[i]
 		if(tempSum >= rightMax):
-			highIndexSplit = i 
+			highIndexSplit = i
 			rightMax = tempSum
-		
+
 		#final bit of logic for finding max. Once max is found, update prefix (left index, right index, sum) and return to next level recursion
 
 	if(leftMSS[2] >= rightMSS[2]):
@@ -159,12 +159,12 @@ def Algorithm4(array):
 	maxArray = [maxArrayIndexLow,maxArrayIndexHigh,maxSum]
 
 	return maxArray
-	
+
 
 #Here is the "main" function so far it just reads every line from a file, stores those lines (arrays)
 #as an array and then stores those in an array of arrays (so you only have to get file contents once. )
 
-#declare and array to hold the arrays from file. 
+#declare and array to hold the arrays from file.
 arrayOfArrays = []
 with open('MSS_Problems.txt','r') as f:
 	#parse each line in test file and store in array to send to the different functions
@@ -179,9 +179,9 @@ with open('MSS_Problems.txt','r') as f:
 			line = line.replace('\n',"")
 			#parsing on comma
 			array = [int(x) for x in line.split(",")]
-			#make array of arrays for use in all 4 algorithms. 
+			#make array of arrays for use in all 4 algorithms.
 			arrayOfArrays.append(array)
-			
+
 
 fo = open("MSS_Results.txt","w+") #open file object to print results
 
@@ -205,13 +205,13 @@ for k in arrayOfArrays:
 #output to MSS_results.txt file alg3 results
 fo.write("Algorithm 3 results: \n")
 for k in arrayOfArrays:
-	
+
 	lastIndex = len(k) - 1
 	inputArray = [0,lastIndex,0]
 
 	for i in range(0,len(k)):
 		inputArray.append(k[i])
-	
+
 	alg3results = []
 	alg3results = Algorithm3(inputArray)
 
